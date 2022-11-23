@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, render_template, flash
-from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.wtf import Form
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
 from wtforms import FieldList
-from wtforms import Form as NoCsrfForm
-from wtforms.fields import StringField, FormField, SubmitField
+# from wtforms import Form as NoCsrfForm
+from wtforms import StringField, FormField, SubmitField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__)
@@ -35,15 +35,15 @@ class Phone(db.Model):
 
 
 # - - - Forms - - -
-class PhoneForm(NoCsrfForm):
+class PhoneForm(FlaskForm):
     # this forms is never exposed so we can user the non CSRF version
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     phone_name = StringField('Phone Description')
 
 
-class CombinedForm(Form):
+class CombinedForm(FlaskForm):
     username = StringField('User', validators=[DataRequired()])
-    # we must provide empth Phone() instances else populate_obj will fail
+    # we must provide empty Phone() instances else populate_obj will fail
     phones = FieldList(FormField(PhoneForm, default=lambda: Phone()))
     submit = SubmitField('Submit')
 
@@ -75,6 +75,7 @@ def prep_db():
     db.create_all()
     db.session.add(User(username='Umberto'))
     db.session.commit()
+
 
 if __name__ == '__main__':
     prep_db()
