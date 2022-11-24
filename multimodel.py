@@ -3,7 +3,7 @@ from flask import Flask, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import FieldList
-# from wtforms import Form as NoCsrfForm
+from wtforms import Form as NoCsrfForm
 from wtforms import StringField, FormField, SubmitField
 from wtforms.validators import DataRequired
 
@@ -35,7 +35,7 @@ class Phone(db.Model):
 
 
 # - - - Forms - - -
-class PhoneForm(FlaskForm):
+class PhoneForm(NoCsrfForm):
     # this forms is never exposed so we can user the non CSRF version
     phone_number = StringField('Phone Number', validators=[DataRequired()])
     phone_name = StringField('Phone Description')

@@ -15,6 +15,7 @@
 <h2>Assign Phones to a User</h2>
 
 <form method="POST">
+    {{ form.csrf_token() }}
     {{ form.username.label }}: {{ form.username }}
 
     <div data-toggle="fieldset" id="phone-fieldset">
@@ -35,7 +36,7 @@
             {% endfor %}
         </table>
     </div>
-    {{ form.hidden_tag() }}
+    
     {{ form.submit }}
 
 <h5> <a href="{{ url_for('index') }}">Home</a> </h5>
